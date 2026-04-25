@@ -128,7 +128,7 @@ This project shows how content production can be fully automated, from product i
 ## Sample Output
 
 See full examples here:  
-📄 `/samples/sample-output.md`
+📄 `sample-output.md`
 
 ---
 
