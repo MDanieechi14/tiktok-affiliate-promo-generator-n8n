@@ -80,6 +80,12 @@ Built a scheduled automation system that:
 
 ---
 
+## Security Note
+All credentials (API keys, tokens, IDs) have been removed or replaced with placeholders.  
+Connect your own credentials when importing the workflow.
+
+---
+
 ## Impact
 
 - Automates bulk content creation  
