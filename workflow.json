@@ -1,0 +1,368 @@
+{
+  "name": "TikTok Affiliate Promo Generator",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 9
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        -224
+      ],
+      "id": "5a3d7a7c-1f2e-4f97-9cbb-dc628a077364",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1pVc48G_D3Be7WYBIEn-ljWx6xXeNGwrnj28FVyQ9rZI",
+          "mode": "list",
+          "cachedResultName": "TikTok Affiliate Promo",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1pVc48G_D3Be7WYBIEn-ljWx6xXeNGwrnj28FVyQ9rZI/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1pVc48G_D3Be7WYBIEn-ljWx6xXeNGwrnj28FVyQ9rZI/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        224,
+        -224
+      ],
+      "id": "cddd2a8d-5bea-475e-9ada-69d5c0e16465",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "i8YWtiz7veI72fpM",
+          "name": "Google Sheets OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        224,
+        -32
+      ],
+      "id": "c101cedc-4af7-4b31-87b1-6a8690f0bfb8",
+      "name": "When chat message received",
+      "webhookId": "5ba302b7-3872-4cea-9a62-70dbe669e48e"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are a TikTok Shop affiliate expert. Gumawa ng viral content sa Taglish para sa product na ito.\n\nProduct Name: {{ $json[\"Product Name\"] }}\nAffiliate Link: {{ $json[\"Affiliate Link\"] }}\nNiche: {{ $json[\"Niche\"] }}\nShort Description: {{ $json[\"Short Description\"] }}\n\nGumawa ng:\n- 1 maikling video script (15-30 seconds, may emojis at strong CTA)\n- 1 ready-to-post caption (Taglish, may link at CTA)\n- 5 magagandang hashtags\n\nReturn ONLY clean JSON, walang extra text:\n\n{\n  \"script\": \"dito ang script...\",\n  \"caption\": \"dito ang caption...\",\n  \"hashtags\": [\"#Hashtag1\", \"#Hashtag2\", ...]\n}",
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        448,
+        -128
+      ],
+      "id": "a4353d09-00d6-40c6-acdf-dc3316624691",
+      "name": "Basic LLM Chain"
+    },
+    {
+      "parameters": {
+        "model": "llama-3.3-70b-versatile",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        528,
+        96
+      ],
+      "id": "63088754-25d1-4c62-af32-34bcd26d92bd",
+      "name": "Groq Chat Model",
+      "credentials": {
+        "groqApi": {
+          "id": "xD0nIFJbV3cXqeZs",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Fixed for Groq response structure\nconst rawText = $json.text || \"\";\n\n// Extract the JSON part\nlet cleanText = rawText.trim()\n  .replace(/```json|```/g, '')\n  .trim();\n\nlet parsed = {};\ntry {\n  parsed = JSON.parse(cleanText);\n} catch (e) {\n  // If parsing fails, try to extract manually (backup)\n  parsed = {\n    script: rawText,\n    caption: \"\",\n    hashtags: []\n  };\n}\n\nreturn [{\n  json: {\n    id: $json[\"ID\"] || \"\",\n    script: parsed.script || \"\",\n    caption: parsed.caption || \"\",\n    hashtags: Array.isArray(parsed.hashtags) \n      ? parsed.hashtags.join(\" \") \n      : (parsed.hashtags || \"\")\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        800,
+        -128
+      ],
+      "id": "ab0a354e-ff22-4c2e-9f9d-bc0a810dedd7",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1pVc48G_D3Be7WYBIEn-ljWx6xXeNGwrnj28FVyQ9rZI",
+          "mode": "list",
+          "cachedResultName": "TikTok Affiliate Promo",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1pVc48G_D3Be7WYBIEn-ljWx6xXeNGwrnj28FVyQ9rZI/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1220833437,
+          "mode": "list",
+          "cachedResultName": "Generated Promos",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1pVc48G_D3Be7WYBIEn-ljWx6xXeNGwrnj28FVyQ9rZI/edit#gid=1220833437"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "ID": "={{ $json.id }}",
+            "Product Name": "={{ $('Get row(s) in sheet').item.json['Product Name'] }}",
+            "Affiliate Link": "={{ $('Get row(s) in sheet').item.json['Affiliate Link'] }}",
+            "Niche": "={{ $('Get row(s) in sheet').item.json.Niche }}",
+            "Short Description": "={{ $('Get row(s) in sheet').item.json['Short Description'] }}",
+            "Generated Scripts": "={{ $json.script }}",
+            "Caption": "={{ $json.caption }}",
+            "Hashtags": "={{ $json.hashtags }}",
+            "Timestamp": "={{ $now }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "ID",
+              "displayName": "ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Product Name",
+              "displayName": "Product Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Affiliate Link",
+              "displayName": "Affiliate Link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Niche",
+              "displayName": "Niche",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Short Description",
+              "displayName": "Short Description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Generated Scripts",
+              "displayName": "Generated Scripts",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Caption",
+              "displayName": "Caption",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Hashtags",
+              "displayName": "Hashtags",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Timestamp",
+              "displayName": "Timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1024,
+        -128
+      ],
+      "id": "0cd32530-9837-4240-8a29-6b3aab0af4d9",
+      "name": "Append row in sheet",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "i8YWtiz7veI72fpM",
+          "name": "Google Sheets OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "1863445731",
+        "text": "=✅ TikTok Affiliate Promo Generator Finished!  Generated promos for {{ $json[\"Product Name\"] || \"multiple products\" }}   Check the \"Generated Promos\" sheet.",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1248,
+        -128
+      ],
+      "id": "d9c663fb-4c50-48c2-981b-780f098e2763",
+      "name": "Send a text message",
+      "webhookId": "705ccdf2-e8d7-43c9-ad91-c32e97426349",
+      "credentials": {
+        "telegramApi": {
+          "id": "GSBBuVZYmpSSrW4q",
+          "name": "Telegram account 2"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "9bb4f4fc-f539-4374-ad23-c84c86e6bda1",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "2edbe8773ac31c58a4462ebb5d15f93c956965e9c72a9e72755a811339d75bf6"
+  },
+  "id": "TkDSTaQWhHF9aCjp",
+  "tags": []
+}
