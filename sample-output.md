@@ -40,8 +40,3 @@ Check the link now bago maubos! #SummerEssentials #TikTokFinds
 
 **Hashtags:**  
 #SummerEssentials #TikTokFinds #MiniFan #CommuteLife #Budol
-
-## Sample Output
-
-See full examples here:  
-📄 `/samples/sample-output.md`
