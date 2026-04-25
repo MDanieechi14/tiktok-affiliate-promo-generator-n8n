@@ -121,7 +121,7 @@ Connect your own credentials when importing the workflow.
 
 ## Key Takeaway
 
-This project shows how content production can be fully automated—from product input to ready-to-post TikTok promos—using AI and workflow automation.
+This project shows how content production can be fully automated, from product input to ready-to-post TikTok promos, using AI and workflow automation.
 
 ---
 
