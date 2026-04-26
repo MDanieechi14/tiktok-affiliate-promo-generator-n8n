@@ -62,13 +62,15 @@ Built a scheduled automation system that:
 ---
 
 ## Workflow Overview
-![Workflow]([screenshots/workflow-overview.png])
+![Workflow](screenshots/workflow-overview.png)
 
 ## Content Output Preview
-![Telegram Output]([screenshots/telegram-output.png](https://github.com/MDanieechi14/tiktok-affiliate-promo-generator-n8n/blob/main/screenshots/daily-delivery-telegram.png?raw=true))
+![Telegram Output](screenshots/telegram-output.png)
 
 ## Data Storage
-![Google Sheets]([screenshots/google-sheets.png](https://github.com/MDanieechi14/tiktok-affiliate-promo-generator-n8n/blob/main/screenshots/google-sheets-database.png?raw=true))
+![Google Sheets](screenshots/google-sheets.png)
+
+---
 
 ## Tech Stack
 
