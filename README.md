@@ -65,7 +65,7 @@ Built a scheduled automation system that:
 ![Workflow](screenshots/workflow-overview.png)
 
 ## Content Output Preview
-![Telegram Output](screenshots/screenshots/daily-delivery-telegram.png)
+![Telegram Output](screenshots/daily-delivery-telegram.png)
 
 ## Data Storage
 ![Google Sheets](screenshots/google-sheets-database.png)
