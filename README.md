@@ -128,7 +128,7 @@ This project shows how content production can be fully automated, from product i
 ## Sample Output
 
 See full examples here:  
-📄 `sample-output.md`
+📄 `[sample-output.md](https://github.com/MDanieechi14/tiktok-affiliate-promo-generator-n8n/blob/main/sample-output.md#sample-output--tiktok-affiliate-content-bot)`
 
 ---
 
